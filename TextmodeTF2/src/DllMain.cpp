@@ -1,13 +1,15 @@
 #include <Windows.h>
 #include "Core/Core.h"
-#include "Utils/CrashLog/CrashLog.h"
-#include <exception>
+// #include "Utils/CrashLog/CrashLog.h"
+// #include <exception>
 
 DWORD WINAPI MainThread(LPVOID lpParam)
 {
 	U::Core.Load();
 	U::Core.Loop();
-	CrashLog::Unload(); // 0xC0000409
+	#ifndef TEXTMODE
+	// CrashLog::Unload(); // 0xC0000409
+	#endif
 	U::Core.Unload();
 
 	FreeLibraryAndExitThread(static_cast<HMODULE>(lpParam), EXIT_SUCCESS);
@@ -18,7 +20,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
 	if (fdwReason == DLL_PROCESS_ATTACH)
 	{
-		CrashLog::Initialize();
+		// CrashLog::Initialize();
 		if (const auto hMainThread = CreateThread(nullptr, 0, MainThread, hinstDLL, 0, nullptr))
 			CloseHandle(hMainThread);
 	}

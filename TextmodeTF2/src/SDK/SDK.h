@@ -9,7 +9,9 @@
 #include "../Utils/Memory/Memory.h"
 #include <intrin.h>
 #include <format>
+#ifndef TEXTMODE
 #include <exception>
+#endif
 
 namespace SDK
 {
